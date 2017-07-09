@@ -125,6 +125,21 @@ describe('ElementWriter', function () {
 	});
 
 	describe('addVector', function () {
+		it('should properly handle maxWidth = * with larger images', function () {
+			ew.addImage({_width: 400, _height: 100, fitMaxWidth: true}, 0);
+			assert.equal(page.items.length, 1);
+			assert.equal(page.items[0].item._width, 100);
+			assert.equal(page.items[0].item._height, 25);
+		});
+		it('should properly handle maxWidth = * with smaller images', function () {
+			ew.addImage({_width: 50, _height: 25, fitMaxWidth: true}, 0);
+			assert.equal(page.items.length, 1);
+			assert.equal(page.items[0].item._width, 50);
+			assert.equal(page.items[0].item._height, 25);
+		});
+	});
+
+	describe('addVector', function () {
 		it('should add vectors to the current page', function () {
 			ew.addVector({ type: 'rect', x: 10, y: 10 });
 			assert.equal(page.items.length, 1);
