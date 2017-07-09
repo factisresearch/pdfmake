@@ -92,7 +92,9 @@ ElementWriter.prototype.addImage = function (image, index) {
 	var page = context.getCurrentPage(),
 		position = this.getCurrentPositionOnPage();
 
-	if (!page || (context.availableHeight < image._height && page.items.length > 0)) {
+	if (!page || (!image.fitMaxWidth
+								&& context.availableHeight < image._height
+								&& page.items.length > 0)) {
 		return false;
 	}
 
@@ -102,6 +104,15 @@ ElementWriter.prototype.addImage = function (image, index) {
 
 	image.x = context.x + image._x;
 	image.y = context.y;
+
+	if (image.fitMaxWidth) {
+		var aspectRatio = image._width/image._height;
+		image._width =
+			(image._width > context.availableWidth)
+			 ? context.availableWidth
+			 : image._width;
+		image._height = image._width/aspectRatio;
+	}
 
 	this.alignImage(image);
 
