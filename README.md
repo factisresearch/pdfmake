@@ -550,6 +550,16 @@ var docDefinition = {
       fit: [100, 100]
     },
     {
+      // or into the available context block (column, page, ...)
+      image: 'data:image/jpeg;base64,...encodedContent...',
+      fitAvailable: ['fit', 'fit']
+    },
+    {
+      // you can also fit the image into the available width with maximum height
+      image: 'data:image/jpeg;base64,...encodedContent...',
+      fitAvailable: ['fit', 200]
+    },
+    {
       // if you reuse the same image in multiple nodes,
       // you should put it to to images dictionary and reference it by name
       image: 'mySuperImage'

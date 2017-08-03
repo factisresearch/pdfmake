@@ -92,9 +92,9 @@ ElementWriter.prototype.addImage = function (image, index) {
 	var page = context.getCurrentPage(),
 		position = this.getCurrentPositionOnPage();
 
-	if (!page || (!image.fitMaxWidth
-								&& context.availableHeight < image._height
-								&& page.items.length > 0)) {
+	if (!page || (!image.fitAvailable
+				  && context.availableHeight < image._height
+				  && page.items.length > 0)) {
 		return false;
 	}
 
@@ -105,13 +105,27 @@ ElementWriter.prototype.addImage = function (image, index) {
 	image.x = context.x + image._x;
 	image.y = context.y;
 
-	if (image.fitMaxWidth) {
-		var aspectRatio = image._width/image._height;
-		image._width =
-			(image._width > context.availableWidth)
-			 ? context.availableWidth
-			 : image._width;
-		image._height = image._width/aspectRatio;
+	if (image.fitAvailable) {
+		var fitWidth,
+			fitHeight;
+		if (typeof image.fitAvailable[0] == "number") {
+			fitWidth = Math.min(context.availableWidth, image.fitAvailable[0]);
+			fitHeight = context.availableHeight;
+		} else if (typeof image.fitAvailable[1] == "number") {
+			fitWidth = context.availableWidth;
+			fitHeight = Math.min(context.availableHeight, image.fitAvailable[1]);
+		} else {
+			fitWidth = context.availableWidth;
+			fitHeight = context.availableHeight;
+		}
+
+		var aspectImage = image._width / image._height,
+			aspectFit = fitWidth / fitHeight;
+		var factor = (aspectImage > aspectFit) ?
+			fitWidth / image._width :
+			fitHeight / image._height;
+		image._width = image._width * factor;
+		image._height = image._height * factor;
 	}
 
 	this.alignImage(image);
