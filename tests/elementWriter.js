@@ -125,18 +125,42 @@ describe('ElementWriter', function () {
 		});
 	});
 
-	describe('addVector', function () {
-		it('should properly handle maxWidth = * with larger images', function () {
-			ew.addImage({_width: 400, _height: 100, fitMaxWidth: true}, 0);
+	describe('addImage', function () {
+		it('should properly fit to available context area, if landscape image', function () {
+			ew.addImage({_width: 400, _height: 100, fitAvailable: ['fit', 'fit']}, 0);
 			assert.equal(page.items.length, 1);
 			assert.equal(page.items[0].item._width, 100);
 			assert.equal(page.items[0].item._height, 25);
 		});
-		it('should properly handle maxWidth = * with smaller images', function () {
-			ew.addImage({_width: 50, _height: 25, fitMaxWidth: true}, 0);
+		it('should properly fit to available context area, if portrait image', function () {
+			ew.addImage({_width: 100, _height: 400, fitAvailable: ['fit', 'fit']}, 0);
+			assert.equal(page.items.length, 1);
+			assert.equal(page.items[0].item._width, 25);
+			assert.equal(page.items[0].item._height, 100);
+		});
+		it('should properly fit to specified height', function () {
+			ew.addImage({_width: 96, _height: 400, fitAvailable: ['fit', 50]}, 0);
+			assert.equal(page.items.length, 1);
+			assert.equal(page.items[0].item._width, 12);
+			assert.equal(page.items[0].item._height, 50);
+		});
+		it('should properly fit to specified height, clipped at available height', function () {
+			ew.addImage({_width: 96, _height: 400, fitAvailable: ['fit', 200]}, 0);
+			assert.equal(page.items.length, 1);
+			assert.equal(page.items[0].item._width, 24);
+			assert.equal(page.items[0].item._height, 100);
+		});
+		it('should properly fit to specified width', function () {
+			ew.addImage({_width: 400, _height: 96, fitAvailable: [50, 'fit']}, 0);
 			assert.equal(page.items.length, 1);
 			assert.equal(page.items[0].item._width, 50);
-			assert.equal(page.items[0].item._height, 25);
+			assert.equal(page.items[0].item._height, 12);
+		});
+		it('should properly fit to specified width, clipped at available width', function () {
+			ew.addImage({_width: 400, _height: 96, fitAvailable: [200, 'fit']}, 0);
+			assert.equal(page.items.length, 1);
+			assert.equal(page.items[0].item._width, 100);
+			assert.equal(page.items[0].item._height, 24);
 		});
 	});
 
