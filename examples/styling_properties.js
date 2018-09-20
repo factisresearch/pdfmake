@@ -23,7 +23,19 @@ var docDefinition = {
 			text: 'This paragraph does not use a named-style and sets fontSize to 8 and italics to true',
 			fontSize: 8,
 			italics: true
-		}
+		},
+		'\n\nFor preserving leading spaces use preserveLeadingSpaces property:',
+		{text: '    This is a paragraph with preserved leading spaces.', preserveLeadingSpaces: true},
+		{text: '{', preserveLeadingSpaces: true},
+		{text: '    "sample": {', preserveLeadingSpaces: true},
+		{text: '        "json": "nested"', preserveLeadingSpaces: true},
+		{text: '    }', preserveLeadingSpaces: true},
+		{text: '}', preserveLeadingSpaces: true},
+		'\n\nfontFeatures property:',
+		{text: 'Hello World 1234567890', fontFeatures: ['smcp']},
+		{text: 'Hello World 1234567890', fontFeatures: ['c2sc']},
+		{text: 'Hello World 1234567890', fontFeatures: ['onum']},
+		{text: 'Hello World 1234567890', fontFeatures: ['onum', 'c2sc']}
 	]
 };
 
