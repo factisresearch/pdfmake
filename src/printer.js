@@ -475,7 +475,9 @@ function renderVector(vector, pdfKitDoc) {
 	pdfKitDoc.lineJoin(vector.lineJoin || 'miter');
 	pdfKitDoc.lineCap(vector.lineCap || 'butt');
 
-	//TODO: clipping
+	if (vector.clip) {
+		beginClip(vector.clip, pdfKitDoc);
+	}
 
 	switch (vector.type) {
 		case 'ellipse':
@@ -537,6 +539,10 @@ function renderVector(vector, pdfKitDoc) {
 	} else {
 		pdfKitDoc.strokeColor(vector.lineColor || 'black', vector.strokeOpacity || 1);
 		pdfKitDoc.stroke();
+	}
+
+	if (vector.clip) {
+		endClip(pdfKitDoc);
 	}
 }
 
