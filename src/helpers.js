@@ -51,6 +51,11 @@ function pack() {
 }
 
 function offsetVector(vector, x, y) {
+	if (vector.clip) {
+		vector.clip.x += x;
+		vector.clip.y += y;
+	}
+
 	switch (vector.type) {
 		case 'ellipse':
 		case 'rect':

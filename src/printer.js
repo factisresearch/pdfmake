@@ -527,7 +527,9 @@ function renderVector(vector, pdfKitDoc) {
 	pdfKitDoc.lineJoin(vector.lineJoin || 'miter');
 	pdfKitDoc.lineCap(vector.lineCap || 'butt');
 
-	//TODO: clipping
+	if (vector.clip) {
+		beginClip(vector.clip, pdfKitDoc);
+	}
 
 	var gradient = null;
 
@@ -601,6 +603,10 @@ function renderVector(vector, pdfKitDoc) {
 	} else {
 		pdfKitDoc.strokeColor(vector.lineColor || 'black', strokeOpacity);
 		pdfKitDoc.stroke();
+	}
+
+	if (vector.clip) {
+		endClip(pdfKitDoc);
 	}
 }
 
